@@ -1,0 +1,77 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "**기본사용법**"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const scores = [20, 45, 89, 23, 40];\nconst twotimes = scores.map( s => s * 2);"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**if 문 사용해보기**"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const grades = scores.map( s => {\n    let g = 'Fail';\n    if (s > 40) {\n      g = \"Success\";\n    }\n    return g;\n  });"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "console.log(grades);"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[ 'Fail', 'Success', 'Success', 'Fail', 'Fail' ]",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**원소 변환하기**"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const indexGrades = scores.map( (s, i) => {\n    return s * (i + 1);\n  });\n  \n  console.log(indexGrades);"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[ 20, 90, 267, 92, 200 ]",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

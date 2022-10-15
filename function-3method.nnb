@@ -1,0 +1,203 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# function을 표현하는 3가지 방식\n\n> https://developer.mozilla.org/ko/docs/Web/JavaScript/Guide/Functions\n\n- 함수선언 (function문)\n- 함수표현식\n- 화살표함수"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 함수선언\njavascript에서 함수를 사용하는 가장 기본적인 방식이다."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function squareA(number) {\n    return number * number;\n  }\n  var x = squareA(3);\n  console.log(x);"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "9",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 함수표현식\n함수를 다른 함수의 매개변수로 전달할 때 편리하다"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "var squareB = function(number) {\n    return number * number;\n  };\n  \n  var y = squareB(4);\n  console.log(y);"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "16",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 화살표 함수\n언제나 익명이다. 함수를 더 짧게 사용하는 것이 유용할때가 있다."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "var arr = [ \"hydrogen\", \"helium\", \"lithum\", \"beryllium\"];\nvar arr2 = arr.map( s => s.length );\nconsole.log(arr2);"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[ 8, 6, 6, 9 ]",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "```\ns => s.length\n\nfunction aa (s) {\n  return s.length();\n}\n\nfunction aaa ( a, b) {\n  var x = a + b;\n  return x;\n}\n\n(a,b) => {\n  var x = a + b;\n  return x;\n}\n```"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 함수표현식과 화살표 함수의 조합\n함수표현식과 화살표 함수를 조합하기도 한다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const square = num => num * num;\nconsole.log(square(5));\n\n/*\nconst square = (num) => { \n  return num * num;\n};\n*/"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "25",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## object에 함수를 담아 넘기기"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const plus = (a,b) => a + b;\n\nconst dataObjA = {\n  id : \"matthew\",\n  age : 24,\n  func : plus\n};\n\nconsole.log(dataObjA.func(3,4));"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "7",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### 변수를 안쓰고 더 짧게 쓰고 싶다면"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const dataObjB = {\n    id : \"matthew\",\n    age : 24,\n    func : (a,b) => a + b\n  };\n  \n  console.log(dataObjB.func(3,4));"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "7",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "var funcD = (a, b) => a*b;\nconsole.log(funcD(1, 2));\n\nfuncD(3,4);"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "2",
+                                ""
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "items": [
+                        {
+                            "mime": "text/plain",
+                            "value": [
+                                "\u001b[33m12\u001b[39m"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
