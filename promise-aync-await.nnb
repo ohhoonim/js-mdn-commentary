@@ -1,0 +1,171 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "## Promise\n\n 시간이 오래걸리는 작업을 수행할 때 결과 값을 기다리지 않고 다음 작업을 먼저 수행하는 방식을 비동기라고 합니다. Promise는 응답결과가 오래걸리는 작업을 수행할때 시간이 지난 후의 완료 실패 여부에 대한 결과를 표시하여 줍니다. async/await를 이용하면 결과값을 받은 후 다음 작업이 진행 되도록 하는 동기 작업도 수월하게 코딩할 수 있습니다. \n\n> https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise\n\nEvent Loop 를 반드시 알아야 할 필요는 없으나, 프로젝트를 진행하다보면 언젠가는 공부해야할 부분입니다. \n\n> https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Promise의 주요 메서드\n\n- reject()\n- resolve()\n- catch()\n- then()\n- finally()"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 기본 예제\n\n- then()"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let callStart = new Promise((resolve, reject) => {\n    setTimeout(function() {\n        resolve({statusCode: \"001\", message: \"전화 연결 시작\"});\n    }, 1000);\n});\n\ncallStart.then((message) => {\n    console.log(\"전화연결상태: \", message);\n});\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "전화연결상태:  { statusCode: '001', message: '전화 연결 시작' }",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 여러개의 Promise 사용하기\n\n기본예제에서 전화연결이 시작되면 '통화중' 이라고 표시해 봅시다"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let calling = (message) => {\n    if (message[\"statusCode\"] === \"001\") {\n        msg = {statusCode: \"002\", message: \"통화중\"};\n    }\n    return new Promise((resolve, result) => {\n        resolve(msg);\n    }); \n};\n\ncallStart\n    .then(calling)\n    .then((message) => { \n        console.log(\"전화연결상태: \", message); \n    });"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "전화연결상태:  { statusCode: '002', message: '통화중' }",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 에러처리\n\n- catch()\n- finally()"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "여러개의 Promise 사용하기 예제에서 statusCode 가 \"001\"이 아닌경우 에러를 발생시켜봅시다."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "// callStart함수에 옵션을 넣도록 적용해보았습니다. \nlet callStart = (options) => {\n    let msg = {statusCode: \"001\", message: \"전화 연결 시작\"};\n    if (!options.isCustomer) {\n        msg.statusCode = \"D01\"\n    }\n    return new Promise((resolve, reject) => {\n        setTimeout(function() {\n            resolve(msg);\n        }, 1000);\n    });\n};\n\nlet calling = (message) => {\n    let msg = message;\n    if (message[\"statusCode\"] === \"001\") {\n        msg = {statusCode: \"002\", message: \"통화중\"};\n    } else {\n        //  throw new Error({statusCode: \"E01\", message: \"통화연결이 되지 않았습니다.\"})\n    }\n    return new Promise((resolve, reject) => {\n        // resolve(msg);\n        msg[\"statusCode\"] === \"002\" ? resolve(msg) : reject({statusCode: \"E01\", message: \"통화연결이 되지 않았습니다.\"});\n    }); \n};\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let options = {\n    isCustomer: false\n};\n\ncallStart(options)\n    .then(calling)\n    .then((message) => { \n        console.log(\"전화연결상태: \", message); \n    }).catch(err => {\n        console.log(\"ERROR: \", err);\n    });"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "ERROR:  { statusCode: 'E01', message: '통화연결이 되지 않았습니다.' }",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "finally() 를 사용하여 3초후 강제로 통화를 종료시켜 봅시다"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let options2 = {\n    isCustomer: true\n};\ncallStart(options2)\n    .then(calling)\n    .then((message) => { \n        console.log(\"전화연결상태: \", message); \n    }).catch(err => {\n        console.log(\"ERROR: \", err);\n    }).finally(() => {\n        setTimeout(() => console.log(\"연결종료\"), 3000);\n    });"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "전화연결상태:  { statusCode: '002', message: '통화중' }",
+                                "연결종료",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## async / await로 전환하기"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "async function callWithFriend (option) {\n    try {\n        const newCall = await callStart(option);\n        const newCalling = await calling(newCall);\n        console.log(newCalling);\n    } catch(err) {\n        console.log(\"ERROR: \", err);\n    } finally {\n        setTimeout(() => console.log(\"연결종료\"), 3000);\n    }\n\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let options3 = {\n    isCustomer: true\n};\n\ncallWithFriend(options3);"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "ERROR:  { statusCode: 'E01', message: '통화연결이 되지 않았습니다.' }",
+                                "연결종료",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
