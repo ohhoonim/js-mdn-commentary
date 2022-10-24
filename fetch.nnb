@@ -1,0 +1,102 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "## Fetch API\n\nFetch API는 HTTP를 구성하는 요청(request), 응답(response) 그리고 헤더(Headers)의 요소를 Javascript에서 조작할 수 있는 인터페이스를 제공합니다.\n\n이전에는 XMLHttpRequest를 사용하여 jQuery와 같은 라이브러리의 도움을 받았지만, 이제는 Fetch API의 전역 fetch() 메서드 하나면 쉽게 비동기적으로 가져올 수 있습니다. \n\n- 🔗 [MDN Fetch API](https://developer.mozilla.org/ko/docs/Web/API/Fetch_API)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                ""
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "**시작하기 전에**\n\n원격 데이터를 호출하기 위해 JSONPlaceholder라는 페이크(Fake) api 사이트를 이용할 예정입니다. 무료로 사용할 수 있어 테스트 용도로 사용하기 좋습니다. \n\n- [JSON Placeholder Guide](https://jsonplaceholder.typicode.com/guide/)\n\nnodejs 환경에서는 17.5 버전 이후에 Fetch API를 지원합니다. 현재(2022년 10월)는 지원하지 않는 nodejs 버전이 많으니 아래 예제들은 브라우저의 개발자 도구 환경에서 실행하시기 바랍니다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### 기본 사용법\n\nfetch 메서드는 promise로 동작합니다. promise가 익숙하지 않으신 분은 promise 영상을 시청하시기 바랍니다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "fetch('https://jsonplaceholder.typicode.com/posts/1')\n  .then((response) => response.json())\n  .then((json) => console.log(json));"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### 옵션 추가하기\n\n두번째 파라미터로 옵션을 설정하여 호출 할 수 있습니다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "fetch('https://jsonplaceholder.typicode.com/posts/1', {\n    method: 'GET', \n    headers: {\n      'Content-Type': 'application/json',\n    }\n  }).then((response) => response.json())\n  .then((json) => console.log(json));"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "아래 예제와 같이 'body' 부부분에 데이터를 담아 서버에 전송할 수 도 있습니다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "fetch('https://jsonplaceholder.typicode.com/posts', {\n  method: 'POST',\n  body: JSON.stringify({\n    title: 'foo',\n    body: 'bar',\n    userId: 1,\n  }),\n  headers: {\n    'Content-type': 'application/json; charset=UTF-8',\n  },\n})\n  .then((response) => response.json())\n  .then((json) => console.log(json));"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### 파일 업로드"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const formData = new FormData();\nconst fileField = document.querySelector('input[type=\"file\"]');\n\nformData.append('username', 'abc123');\nformData.append('avatar', fileField.files[0]);\n\nfetch('https://example.com/profile/avatar', {\n  method: 'PUT',\n  body: formData,\n})\n.then((response) => response.json())\n.then((result) => {\n  console.log('성공:', result);\n})\n.catch((error) => {\n  console.error('실패:', error);\n});"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "여러개의 파일 업로드도 가능합니다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "\nconst formData = new FormData();\nconst photos = document.querySelector('input[type=\"file\"][multiple]');\n\nformData.append('title', '제주도 수학여행');\nfor (let i = 0; i < photos.files.length; i++) {\n  formData.append(`photos_${i}`, photos.files[i]);\n}\n\nfetch('https://example.com/posts', {\n  method: 'POST',\n  body: formData,\n})\n.then((response) => response.json())\n.then((result) => {\n  console.log('성공:', result);\n})\n.catch((error) => {\n  console.error('실패:', error);\n});"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### fetch() 메서드\n\n> https://developer.mozilla.org/en-US/docs/Web/API/fetch"
+            ],
+            "outputs": []
+        }
+    ]
+}
