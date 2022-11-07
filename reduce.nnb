@@ -1,0 +1,142 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# reduce\nreduce() 메서드는 <u>_배열_</u>의 각 요소에 대해 주어진 <u>_리듀서함수_</u>를 실행하고 하나의 결과 값을 반환합니다. \n\n🔗 [reduce mdn 페이지링크](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 리듀서 함수란?\n\n```js\n    arr.reduce(callback, initialValue);\n```\n\n여기서 callback을 리듀서 함수라하고 네 개의 인자를 가진다.\n- 누산기 (accumulator) : callback의 리턴값을 누적한다.\n- 현재값 (currentValue) : 현재 처리해야 할 요소\n- [option] 현재 인덱스 (currentIndex) : 현재 처리해야할 요소의 인덱스. initialValue가 없는 경우 1부터 시작한다.\n- [option] 원본 배열 (array) : 리듀서를 호출한 배열 원본\n\n```js\nconst reducer = (acc, cur, idx, arr) => {\n    // 로직...\n    return ; // acc와 동일한 타입\n}\n```\n\ninitialValue (초기값) 은 없어도 되지만 있는것이 안전하다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## sum 을 구하는 예제"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const array1 = [1, 2, 3, 4];\n\nconst initialValue = 0;\nconst sumCallback = (acc, cur) => {\n  return acc + cur;\n};\nconst sumWithInitial = array1.reduce(sumCallback, initialValue);\nconsole.log(sumWithInitial); // 10"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "10",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "| callback   | accumulator | currentValue | currentIndex | 반환 값 |\n| ---------- | ----------- | ------------ | ------------ | ------- |\n| 1번째 호출 | 0           | 1            | 1            | 1       |\n| 2번째 호출 | 1           | 2            | 2            | 3       |\n| 3번째 호출 | 3           | 3            | 3            | 6       |\n| 4번째 호출 | 6           | 4            | 4            | 10      |"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### 화살표 함수를 사용하면, \n\n```js\nconst array1 = [1, 2, 3, 4];\nconst sumWithInitial = array1.reduce((acc, cur) => acc + cur, 0);\n```"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## max를 구하는 예제"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const array2 = [13, 22, 54, 53];\n\nconst maxValue = array2.reduce((acc, cur) => Math.max(acc, cur));\nconsole.log(maxValue); //"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 배열에서 동일 단어수 카운트하는 예제"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "var names = ['Alice', 'Bob', 'Tiff', 'Bruce', 'Alice'];\n\nvar countedNames = names.reduce(function (allNames, name) {\n  if (name in allNames) {\n    allNames[name]++;\n  } else {\n    allNames[name] = 1;\n  }\n  return allNames;\n}, {});\n\nconsole.log(countedNames);"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## groupBy 예제"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "var people = [\n    { name: 'Alice', age: 21 },\n    { name: 'Max', age: 20 },\n    { name: 'Jane', age: 20 }\n  ];\n  \n  function groupBy(objectArray, property) {\n    return objectArray.reduce(function (acc, obj) {\n      var key = obj[property];\n      if (!acc[key]) {\n        acc[key] = [];\n      }\n      acc[key].push(obj);\n      return acc;\n    }, {});\n  }\n  \n  var groupedPeople = groupBy(people, 'age');\n\n  console.log(groupedPeople);"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 파이프로 함수 연결 구성하기\ninput type과 acc type이 동일 할 때 사용하면 유용"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const pipe = (...functions) => input => functions.reduce((acc, fn) => fn(acc), input);\n\nconst double = x => 2 * x;\nconst triple = x => 3 * x;\nconst quadruple = x => 4 * x;\n\nconst multiply24 = pipe(double, triple, quadruple);\n\nmultiply24(10); // 240"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "(참고) \"...\"는 전개구문(spread syntax) 이라고 합니다. \n\n🔗 [Spread syntax mdn페이지 링크](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Operators/Spread_syntax)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "```js\nfunction pipe (...functions) {\n    return function(input) {\n        return functions.reduce((acc, fn) => {\n            return fn(acc);\n        }, input);\n    }\n}\n```"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## groupBy하고 counting하기"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const citizen = [\n    { name: 'Alice', age: 21 },\n    { name: 'Max', age: 20 },\n    { name: 'Jane', age: 20 }\n];\n\nconst groupByReducer = (arr, prop) => {\n    return arr.reduce(function (acc, curr) {\n        var key = curr[prop];\n        if (!acc[key]) {\n            acc[key] = [];\n        }\n        acc[key].push(curr);\n        return acc;\n    }, {});\n};\n\nvar groupbyAge = groupByReducer(citizen, \"age\");\nconsole.log(groupbyAge);\n\nlet keys = Object.keys(groupbyAge);\nlet result = keys.reduce( (acc, key) => {\n    acc[key] = groupbyAge[key].length;\n    return acc;\n}, {});\nconsole.log(result);"
+            ],
+            "outputs": []
+        }
+    ]
+}
