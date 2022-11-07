@@ -66,7 +66,19 @@
             "source": [
                 "const array2 = [13, 22, 54, 53];\n\nconst maxValue = array2.reduce((acc, cur) => Math.max(acc, cur));\nconsole.log(maxValue); //"
             ],
-            "outputs": []
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "54",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
             "language": "markdown",
@@ -80,7 +92,19 @@
             "source": [
                 "var names = ['Alice', 'Bob', 'Tiff', 'Bruce', 'Alice'];\n\nvar countedNames = names.reduce(function (allNames, name) {\n  if (name in allNames) {\n    allNames[name]++;\n  } else {\n    allNames[name] = 1;\n  }\n  return allNames;\n}, {});\n\nconsole.log(countedNames);"
             ],
-            "outputs": []
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "{ Alice: 2, Bob: 1, Tiff: 1, Bruce: 1 }",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
             "language": "markdown",
@@ -94,7 +118,22 @@
             "source": [
                 "var people = [\n    { name: 'Alice', age: 21 },\n    { name: 'Max', age: 20 },\n    { name: 'Jane', age: 20 }\n  ];\n  \n  function groupBy(objectArray, property) {\n    return objectArray.reduce(function (acc, obj) {\n      var key = obj[property];\n      if (!acc[key]) {\n        acc[key] = [];\n      }\n      acc[key].push(obj);\n      return acc;\n    }, {});\n  }\n  \n  var groupedPeople = groupBy(people, 'age');\n\n  console.log(groupedPeople);"
             ],
-            "outputs": []
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "{",
+                                "  '20': [ { name: 'Max', age: 20 }, { name: 'Jane', age: 20 } ],",
+                                "  '21': [ { name: 'Alice', age: 21 } ]",
+                                "}",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
             "language": "markdown",
@@ -106,9 +145,20 @@
         {
             "language": "javascript",
             "source": [
-                "const pipe = (...functions) => input => functions.reduce((acc, fn) => fn(acc), input);\n\nconst double = x => 2 * x;\nconst triple = x => 3 * x;\nconst quadruple = x => 4 * x;\n\nconst multiply24 = pipe(double, triple, quadruple);\n\nmultiply24(10); // 240"
+                "const pipe = (...functions) => input => functions.reduce((acc, fn) => fn(acc), input);\n\nconst double = x => 2 * x;\nconst triple = x => 3 * x;\nconst quadruple = x => 4 * x;\n\nconst multiply24 = pipe(double, triple, quadruple);\n\n\nmultiply24(10); // 240\n"
             ],
-            "outputs": []
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "text/plain",
+                            "value": [
+                                "\u001b[33m240\u001b[39m"
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
             "language": "markdown",
@@ -134,9 +184,25 @@
         {
             "language": "javascript",
             "source": [
-                "const citizen = [\n    { name: 'Alice', age: 21 },\n    { name: 'Max', age: 20 },\n    { name: 'Jane', age: 20 }\n];\n\nconst groupByReducer = (arr, prop) => {\n    return arr.reduce(function (acc, curr) {\n        var key = curr[prop];\n        if (!acc[key]) {\n            acc[key] = [];\n        }\n        acc[key].push(curr);\n        return acc;\n    }, {});\n};\n\nvar groupbyAge = groupByReducer(citizen, \"age\");\nconsole.log(groupbyAge);\n\nlet keys = Object.keys(groupbyAge);\nlet result = keys.reduce( (acc, key) => {\n    acc[key] = groupbyAge[key].length;\n    return acc;\n}, {});\nconsole.log(result);"
+                "const citizen = [\n    { name: 'Alice', age: 21 },\n    { name: 'Max', age: 20 },\n    { name: 'Jane', age: 20 }\n];\nconst groupByReducer = (arr, prop) => {\n    return arr.reduce(function (acc, curr) {\n        var key = curr[prop];\n        if (!acc[key]) {\n            acc[key] = [];\n        }\n        acc[key].push(curr);\n        return acc;\n    }, {});\n};\nvar groupbyAge = groupByReducer(citizen, \"age\");\nconsole.log(groupbyAge);\n\nlet keys = Object.keys(groupbyAge);\nlet result = keys.reduce( (acc, key) => {\n    acc[key] = groupbyAge[key].length;\n    return acc;\n}, {});\nconsole.log(result);"
             ],
-            "outputs": []
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "{",
+                                "  '20': [ { name: 'Max', age: 20 }, { name: 'Jane', age: 20 } ],",
+                                "  '21': [ { name: 'Alice', age: 21 } ]",
+                                "}",
+                                "{ '20': 2, '21': 1 }",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }
