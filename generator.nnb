@@ -1,0 +1,186 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# Generator\n\n🔗 [iterator & generator](https://developer.mozilla.org/ko/docs/Web/JavaScript/Guide/Iterators_and_Generators)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 자바스크립트에서의 iterator(반복자) 타입이란\n\n자바스크립트에서 iterator 타입은 next() 메서드를 구현하고, next() 메서드는 {value: \"\", done: \"\"} 객체를 리턴한다. \n\n🔗 [MDN iterator protocal 정의](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterator_protocol)\n\n**참고** 소스가 본 확장툴에서는 정상동작하지 않습니다. 브라우저 콘솔에서 테스트하시기 바랍니다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const iter = {\n    next: function() {\n        return {value: undefined , done: false};\n    }\n};"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function makeRangeIterator(start = 0, end = Infinity, step = 1) {\n    var nextIndex = start;\n    var n = 0;\n\n    var rangeIterator = {\n       next: function() {\n           var result;\n           if (nextIndex < end) {\n               result = { value: nextIndex, done: false }\n           } else if (nextIndex == end) {\n               result = { value: n, done: true }\n           } else {\n               result = { done: true };\n           }\n           nextIndex += step;\n           n++;\n           return result;\n       }\n    };\n    return rangeIterator;\n}\n// makeRangeIterator(1, 2, 5);"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let iter = makeRangeIterator(1, 18, 3);\n\nlet result = iter.next();\nwhile (!result.done) {\n   console.log(result.value);\n   result = iter.next();\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "iterator(반복자)를 잘 사용하면 유용하지만, 내부적으로 상태를 유지해야하므로 주의해서 사용해야한다는 단점이 있다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## generator함수의 function* 문법 \n\ngenerator 함수는 'function*' 문법을 사용하여 작성된다. 최초 호출시 어떤 코드도 실행되지 않고 iterator타입을 반환한다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function* abcGen() {\n    yield 'a';\n    yield 'b';\n    yield 'c';\n}\n\nconst abc = abcGen();\n\nconsole.log(abc.next());\nconsole.log(abc.next());\nconsole.log(abc.next());\nconsole.log(abc.next());\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "앞서 작성했던 iterator를 generator로 구현해보면 아래와 같습니다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function* makeRangeGenerator(start = 0, end = Infinity, step = 1) {\n    let n = 0;\n    for (let i = start; i < end; i += step) {\n        n++;\n        yield i;\n    }\n    return n;\n}\n\nconst rangeGenerator = makeRangeGenerator(1, 10, 3);\n\nconsole.log(rangeGenerator.next());\nconsole.log(rangeGenerator.next());\nconsole.log(rangeGenerator.next());\nconsole.log(rangeGenerator.next());"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "next() 메서드에 파라미터로 값을 전달할 수 도 있습니다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function* makeRangeGenerator3(start , end, step) {\n    let n = 0;\n    for (let i = start; i < end; i += step) {\n        n++;\n        let isBreak = yield i;\n        // console.log(isBreak);\n        if (isBreak === true) {\n            break;\n        }\n    }\n\n    return n;\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "\nconst rangeGenerator3 = makeRangeGenerator3(1, 20, 2);\n\nconsole.log(rangeGenerator3.next());\nconsole.log(rangeGenerator3.next());\nconsole.log(rangeGenerator3.next());\nconsole.log(rangeGenerator3.next());\nconsole.log(rangeGenerator3.next(false));\nconsole.log(rangeGenerator3.next());\nconsole.log(rangeGenerator3.next());\nconsole.log(rangeGenerator3.next());\nconsole.log(rangeGenerator3.next());"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "return() 메서드를 사용하면 파라미터로 value 를 전달할 수 있습니다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const rangeGenerator4 = makeRangeGenerator3(1, 10, 2);\n\nconsole.log(rangeGenerator4.next());\nconsole.log(rangeGenerator4.next());\nconsole.log(rangeGenerator4.next());\nconsole.log(rangeGenerator4.next());\nconsole.log(rangeGenerator4.next());\nconsole.log(rangeGenerator4.next());\nconsole.log(rangeGenerator4.next());\nconsole.log(rangeGenerator4.return(\"종료\"));\nconsole.log(rangeGenerator4.next());"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## generator의 활용\n\n- custom iterables\n- lazy/infinite sequences\n- state machines\n- data processing\n- data streams"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 활용예제1 - UUID 생성기"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function* UUIDGenerator() {\n    let d, r;\n    while(true) {\n        yield 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {\n            r = (new Date().getTime() + Math.random()*16)%16 | 0;\n            d = Math.floor(d/16);\n            return (c=='x' ? r : (r&0x3|0x8)).toString(16);\n        });\n    }\n};"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const uuid = UUIDGenerator();\n\nfor (let i = 0; i < 100; i++) {\n    let result = uuid.next().value;\n    console.log(result);\n}\n\nconsole.log(uuid.next());\nconsole.log(uuid.next());\nconsole.log(uuid.next());"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 활용예제 2 - custom iterables"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const cardDeck = ({\n    suits: [\"♣️\", \"♦️\", \"♥️\", \"♠️\"],\n    court: [\"J\", \"Q\", \"K\", \"A\"],\n    [Symbol.iterator]: function* () {\n      for (let suit of this.suits) {\n        for (let i = 2; i <= 10; i++) yield suit + i;\n        for (let c of this.court) yield suit + c;\n      }\n    }\n  })\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "[...cardDeck];"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 활용예제 3 - 무한 스크롤 페이지 가져오기"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "getSwapiPagerator = (endpoint) =>\n  async function* () {\n    let nextUrl = `https://swapi.dev/api/${endpoint}`;\n    while (nextUrl) {\n      const response = await fetch(nextUrl);\n      const data = await response.json();\n      nextUrl = data.next;\n      yield* data.results;\n    }\n  }\n// Example adapted from Luciano Mammino's https://www.nodejsdesignpatterns.com/blog/javascript-async-iterators/"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "starWars = ({\n    characters: {\n      [Symbol.asyncIterator]: getSwapiPagerator(\"people\")\n    },\n    planets: {\n      [Symbol.asyncIterator]: getSwapiPagerator(\"planets\")\n    },\n    ships: {\n      [Symbol.asyncIterator]: getSwapiPagerator(\"starships\")\n    }\n  })"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "{\n    const results = [];\n    for await (const page of starWars.ships) {\n      console.log(page.name);\n      results.push(page.name);\n      yield results;\n    }\n  }"
+            ],
+            "outputs": []
+        }
+    ]
+}
