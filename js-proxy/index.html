@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dom Proxy</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="menus" class="sidebar">
+        <div id="home" >Home</div>
+        <div id="profile">Profile</div>
+        <div id="about"class="selected">About</div>
+    </div>
+    <script type="module">
+        import { selectedTab } from './tabs.js'
+
+        const menus = document.querySelectorAll('#menus>div')
+        menus.forEach(menu => {
+            if (menu.classList.contains("selected")) {
+                selectedTab.selected = menu.id
+            }
+            menu.addEventListener('click', (e) => {
+                selectedTab.selected = e.target.id
+
+            })
+        });
+
+    </script>
+</body>
+
+</html>
