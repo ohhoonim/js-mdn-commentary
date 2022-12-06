@@ -1,0 +1,161 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# Proxy"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "> https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Proxy\n\nProxy 객체를 사용하면 원래 Object 대신 사용할 수 있는 객체를 만들지만, 이 객체의 속성 가져오기, 설정 및 정의와 같은 기본 객체 작업을 재정의할 수 있습니다. 프록시 객체는 일반적으로 속성 액세스를 기록하고, 입력의 유효성을 검사하고, 형식을 지정하거나, 삭제하는 데 사용됩니다."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "- target: 프록시할 원본 객체\n- handler: 가로채는 작업과 가로채는 작업을 재정의하는 방법을 정의하는 객체입니다."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const target = {\n    message1: \"hello\",\n    message2: \"everyone\"\n};\n\nconst handler1 = {};\n\nconst proxy1 = new Proxy(target, handler1);\n\nconsole.log(target)\nconsole.log(proxy1)\nconsole.log(target === proxy1)"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "{ message1: 'hello', message2: 'everyone' }",
+                                "{ message1: 'hello', message2: 'everyone' }",
+                                "false",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## get() 을  사용하면"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const target2 = {\n  message1: \"hello\",\n  message2: \"everyone\"\n};\n\nconst handler2 = {\n  get(target, prop, receiver) {\n    return \"world\";\n  }\n};\n\nconst proxy2 = new Proxy(target2, handler2);\nconsole.log(target2.message1);\nconsole.log(proxy2.message2);\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "hello",
+                                "world",
+                                "{ message1: 'hello', message2: 'everyone' }",
+                                "{ message1: 'hello', message2: 'everyone' }",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 특정 속성에만 동작하게 하려면 Reflect를 사용"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const target3 = {\n  message1: \"hello\",\n  message2: \"everyone\"\n};\n\nconst handler3 = {\n  get(target, prop, receiver) {\n    if (prop === \"message2\") {\n      return \"world\";\n    }\n    return Reflect.get(...arguments);\n  }\n};\n\nconst proxy3 = new Proxy(target3, handler3);\nconsole.log(proxy3.message1);\nconsole.log(proxy3.message2);\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "hello",
+                                "world",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 포워딩 \n\n- No-op 포워딩 프록시: 핸들러를 빈 객체로 전달하면 원본객체에 값을 그대로 전달함. 단, DOM 요소는 안됨. Map 또는 내부슬롯이 있는 모든 기본 객체에는 작동하지 않음.\n- 프라이빗 속성 포워딩 없음: 프라이빗 속성에 대해 값을 전달하지 못함. Reflect대신 target을 전달해야함"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 검증 : set()"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const validator = {\n    set(obj, prop, value) {\n        if (prop === 'age') {\n            if (!Number.isInteger(value)) {\n                throw new TypeError('The age is not an integer');\n            }\n            if (value > 200) {\n                throw new RangeError('The age seems invalid');\n            }\n        }\n        // 값을 저장하는 기본 동적\n        obj[prop] = value;\n        // 성공 표시\n        return true;\n    }\n};\n\nconst person = new Proxy({}, validator);\n\nperson.age = 100;\nconsole.log(person.age); // 100\nperson.age = 'young';    // 예외 발생\nperson.age = 300;        // 예외 발생"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "100",
+                                ""
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.error",
+                            "value": {
+                                "name": "TypeError",
+                                "message": "The age is not an integer",
+                                "stack": "    at Object.set (<Cell 11> [5, 10])\n    at <Cell 11> [24, 2]\n    at <Cell 11> [22, 46]\n    at Script.runInContext (node:vm:141:12)\n    at Script.runInNewContext (node:vm:146:17)\n    at Object.runInNewContext (node:vm:306:38)\n    at C (/Users/hyoungdonju/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:113345)\n    at t.execCode (/Users/hyoungdonju/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:114312)\n    at k.<anonymous> (/Users/hyoungdonju/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:142156)\n    at k.emit (node:events:513:28)"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## DOM 노드 조작"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const view = new Proxy({\n    selected: null,\n},\n    {\n        set(obj, prop, newval) {\n            const oldval = obj[prop];\n\n            if (prop === 'selected') {\n                if (oldval) {\n                    oldval.setAttribute('aria-selected', 'false');\n                }\n                if (newval) {\n                    newval.setAttribute('aria-selected', 'true');\n                }\n            }\n\n            // 값을 저장하는기본 동작\n            obj[prop] = newval;\n\n            // 성공 표시\n            return true;\n        }\n    });\n\nconst item1 = document.getElementById('item-1');\nconst item2 = document.getElementById('item-2');\n\n// item1 선택\nview.selected = item1;\n\nconsole.log(`item1: ${item1.getAttribute('aria-selected')}`);\n// item1: true\n\n// item2를 선택하고 item1은 선택 해제\nview.selected = item2;\n\nconsole.log(`item1: ${item1.getAttribute('aria-selected')}`);\n// item1: false\n\nconsole.log(`item2: ${item2.getAttribute('aria-selected')}`);\n  // item2: true"
+            ],
+            "outputs": []
+        }
+    ]
+}

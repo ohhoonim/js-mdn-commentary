@@ -1,0 +1,32 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.sidebar {
+    height: 100vh;
+    border: 1px solid black;
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar > div {
+    height: 50px;
+    width: 300px;
+    text-align: center;
+    border: 1px solid red;
+    font-size: xx-large;
+    flex-basis: 100px;
+    margin: 20px 2px;
+    vertical-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.selected {
+    background-color:greenyellow;
+}
