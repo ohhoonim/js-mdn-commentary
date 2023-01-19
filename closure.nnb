@@ -1,0 +1,262 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# 클로저\n\n클로저는 함수와 함수가 선언된 어휘적 환경의 조합이다. \n\n> https://developer.mozilla.org/ko/docs/Web/JavaScript/Closures\n\n## Lexical scoping 이란? \n\n어휘적 환경이란 코드가 작성되어있는 환경이 \n- 파일\n- 브라우저의 devtool console  \n등인 것을 말한다. \n즉, 코드가 컴파일이나 인터프리트 되지않은 순수하게 코드가 작성된 상태를 말한다.   \n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function init() {\n    var name = \"matthew\";\n    function displayName() {\n        console.log(name);\n    }\n    displayName();\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "init();"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "matthew",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "javascript에서 내부함수는 외부함수에 접근할 수 있다. 'displayName()' 함수에는 'name'이라는 변수가 선언되어있지 않으므로, 자연스럽게 'init()'함수의 'name' 변수에 접근하게된다. 이 판단은 코드가 작성된 시점에 결정된다. 이를 lexical scoping 이라고 한다.    "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function init2() {\n    var name = \"matthew\";\n    function displayName(name) {\n        console.log(name);\n    }\n    displayName();\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                ""
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "init2();"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "undefined",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "여기서는 displayName() 함수의 'name' 파라미터를 참고하므로 'undefined'가 되었다. 당연한얘기지만 javascript는 변수를 찾을 때 가장 가까운 변수를 참조한다. let, const 등이 없던 시절의 javascript에서는 변수의 스코프가 함수(function)와 전역(global) 두 가지 밖에 없었다. 블록 스코프가 존재하지 않았으며, var변수에 대한 호이스팅(hoisting) 이해가 필수였다.     "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function init3() {\n    let name = \"matthew\";\n    function displayName() {\n        console.log(name);\n    }\n    displayName();\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "init3();"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "matthew",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "var를 let으로 바꿨다고 해서 closure를 설명하는데 내용이 변할 건 없다.  "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 클로저"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function makeFunc() {\n    let name = \"matthew\";\n    function displayName() {\n        console.log(name);\n    }\n    return displayName;\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "var myFunc = makeFunc(); // displayName() 함수를 리턴한다. myFunc는 displayName()함수를 보관하고 있다. \nmyFunc();  // displayName()함수가 실행된다. "
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "matthew",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "신기하게도 myFunc는 display()함수만 실행되는 줄 알았는데 makeFunc()의 name 변수의 값도 가지고 있었다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function makeFunc2() {\n    let name = \"matthew\";\n    function displayName1() {\n        console.log('1' + name);\n    }\n    function displayName2() {\n        console.log('2' + name);\n    }\n    return {name, displayName1, displayName2};\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "var myFunc2 = makeFunc2();\nmyFunc2.displayName1();\nmyFunc2.name = \"alison\";\nmyFunc2.displayName2();"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "1matthew",
+                                "2matthew",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "이렇게 사용하는건 의미가 없다. makeFunc2()를 myFunc2에 할당한 시점에 diplayName1과 displayName2의 name이 이미 'matthew'로 결정 되었기 때문이다. \njavascript에서는 private 이라는 개념이 존재하지 않지만 클로저를 사용해서 비슷한 효과를 줄 수도 있다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function makeFunc3() {\n    let name = \"matthew\";\n    function displayName1(val) {\n        name = '1' + val;\n        console.log(name);\n    }\n    function displayName2(val) {\n        name = '2' + val;\n        console.log(name);\n    }\n    function val() {\n        return name;\n    }\n    return { displayName1, displayName2, val};\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "var myFunc3 = makeFunc3();\nmyFunc3.displayName1(\"jack\");\nmyFunc3.val();\nmyFunc3.displayName2(\"alison\");\nmyFunc3.val();"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "1jack",
+                                "2alison",
+                                ""
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "items": [
+                        {
+                            "mime": "text/plain",
+                            "value": [
+                                "\u001b[32m'2alison'\u001b[39m"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 화살표 함수에서의 클로저 "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const operator = (oper) => (x, y) => console.log(x + oper + y);"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let plus = operator(\"+\");\nplus(2,3);\nplus(7,3);\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "2+3",
+                                "7+3",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
