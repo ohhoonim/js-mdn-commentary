@@ -1,0 +1,153 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# Promise.allSettled()"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "Promise.allSettled() 메서드는 주어진 모든 프로미스를 resolve 또는 reject후, 각 프로미스에 대한 결과를 나타내는 객체 배열을 반환한다."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "const post = (msg: string, len: number): Promise<string> => {\n    return new Promise<string>((resolve, reject) => {\n        if (msg.length > len) {\n            setTimeout(() => resolve(msg), len * 1000)\n        } else {\n            reject(`${len}자보다 길어야 합니다.`)\n        }\n    });\n} \n\nconst matthew = post('matthew', 2)\nconst alice = post('alice', 10)\n\nconst names = [matthew, alice]\n\nPromise.allSettled(names).then(result => console.log(result));"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[",
+                                "  { status: 'fulfilled', value: 'matthew' },",
+                                "  { status: 'rejected', reason: '10자보다 길어야 합니다.' }",
+                                "]",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "전체 프라미스를 실행한 후 그 결과 상태를 체크할 필요가 있을 때 사용하면 된다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "Promise.allSettled(names).then(results => {\n    if (results.filter(r => r.status === 'fulfilled').length === results.length) {\n        console.log('전체 실행이 완료되었습니다.')\n    } else {\n        console.log('일부 실행이 취소되었습니다. 프로세스를 확인해주세요.')\n    }\n});"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "전체 실행이 완료되었습니다.",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 문법\n\n```js\nPromise.allSettled(iterable)\n```\n\n### 인자\n- iterable : 배열이라 생각하면 된다. (정확히는 이터러블 객체)\n\n### 반환값\n\n각 Promise 의 결과에 대한 배열\n\n- resolve인 경우 : { **status**: **'fulfilled'**, **value**: '${리턴값}' }\n- reject인 경우 : { **status**: **'rejected'**, **reason**: '${리턴값}' }"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "아래 예제는 await를 사용했을 때이다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "const promise1 = Promise.resolve(\"promise1 결과\")\nconst promise2 = Promise.reject('프라미스 실행 거부')\nconst promise3 = Promise.reject(new Error('뭔가 에러남'))\n\nconst results = await Promise.allSettled([promise1, promise2, promise3])\nconsole.log(results)    \n\nexport { }\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[",
+                                "  { status: 'fulfilled', value: 'promise1 결과' },",
+                                "  { status: 'rejected', reason: '프라미스 실행 거부' },",
+                                "  {",
+                                "    status: 'rejected',",
+                                "    reason: Error: 뭔가 에러남",
+                                "        at <Cell 8> [3, 0]",
+                                "        at <Cell 8> [9, 46]",
+                                "        at Script.runInContext (node:vm:141:12)",
+                                "        at Script.runInNewContext (node:vm:146:17)",
+                                "        at Object.runInNewContext (node:vm:306:38)",
+                                "        at C (/Users/hyoungdonju/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:113345)",
+                                "        at t.execCode (/Users/hyoungdonju/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:114312)",
+                                "        at k.<anonymous> (/Users/hyoungdonju/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:142156)",
+                                "        at k.emit (node:events:513:28)",
+                                "        at k.emit (node:domain:489:12)",
+                                "  }",
+                                "]",
+                                ""
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stderr",
+                            "value": [
+                                "Debugger attached.",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "Promise.allSettled()은 reject된 것도 실행되지만 Promise.all() 는 reject가 하나라도 있으면 reject를 반환하고 동작을 멈춘다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "const promise11 = Promise.resolve(\"promise1 결과\");\n// const promise21 = Promise.reject('프라미스 실행 거부');   // <- 여기서 reject가 되고, 이후 실행되지 않는다. \nconst promise31 = Promise.resolve(\"resolved\");\n\n// const results2 = await Promise.all([promise11, promise21, promise31]);\nconst results2 = await Promise.all([promise11, promise31]);\nconsole.log(results2);\nexport { }"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[ 'promise1 결과', 'resolved' ]",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
