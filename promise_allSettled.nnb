@@ -54,7 +54,7 @@
                         {
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
-                                "전체 실행이 완료되었습니다.",
+                                "일부 실행이 취소되었습니다. 프로세스를 확인해주세요.",
                                 ""
                             ]
                         }
@@ -81,47 +81,7 @@
             "source": [
                 "const promise1 = Promise.resolve(\"promise1 결과\")\nconst promise2 = Promise.reject('프라미스 실행 거부')\nconst promise3 = Promise.reject(new Error('뭔가 에러남'))\n\nconst results = await Promise.allSettled([promise1, promise2, promise3])\nconsole.log(results)    \n\nexport { }\n"
             ],
-            "outputs": [
-                {
-                    "items": [
-                        {
-                            "mime": "application/vnd.code.notebook.stdout",
-                            "value": [
-                                "[",
-                                "  { status: 'fulfilled', value: 'promise1 결과' },",
-                                "  { status: 'rejected', reason: '프라미스 실행 거부' },",
-                                "  {",
-                                "    status: 'rejected',",
-                                "    reason: Error: 뭔가 에러남",
-                                "        at <Cell 8> [3, 0]",
-                                "        at <Cell 8> [9, 46]",
-                                "        at Script.runInContext (node:vm:141:12)",
-                                "        at Script.runInNewContext (node:vm:146:17)",
-                                "        at Object.runInNewContext (node:vm:306:38)",
-                                "        at C (/Users/hyoungdonju/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:113345)",
-                                "        at t.execCode (/Users/hyoungdonju/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:114312)",
-                                "        at k.<anonymous> (/Users/hyoungdonju/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:142156)",
-                                "        at k.emit (node:events:513:28)",
-                                "        at k.emit (node:domain:489:12)",
-                                "  }",
-                                "]",
-                                ""
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "items": [
-                        {
-                            "mime": "application/vnd.code.notebook.stderr",
-                            "value": [
-                                "Debugger attached.",
-                                ""
-                            ]
-                        }
-                    ]
-                }
-            ]
+            "outputs": []
         },
         {
             "language": "markdown",
@@ -135,19 +95,7 @@
             "source": [
                 "const promise11 = Promise.resolve(\"promise1 결과\");\n// const promise21 = Promise.reject('프라미스 실행 거부');   // <- 여기서 reject가 되고, 이후 실행되지 않는다. \nconst promise31 = Promise.resolve(\"resolved\");\n\n// const results2 = await Promise.all([promise11, promise21, promise31]);\nconst results2 = await Promise.all([promise11, promise31]);\nconsole.log(results2);\nexport { }"
             ],
-            "outputs": [
-                {
-                    "items": [
-                        {
-                            "mime": "application/vnd.code.notebook.stdout",
-                            "value": [
-                                "[ 'promise1 결과', 'resolved' ]",
-                                ""
-                            ]
-                        }
-                    ]
-                }
-            ]
+            "outputs": []
         }
     ]
 }

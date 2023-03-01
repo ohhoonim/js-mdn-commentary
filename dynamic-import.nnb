@@ -1,0 +1,72 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "## Dynamic import\n\n소스코드는 'dynamic-moudule' 폴더 참조. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 정적 import\n\nscript 태그에 type=\"module\" 속성이 필요하다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "// say.js\n\nexport function hi() {\n    return 'hi!!'\n}\n\nexport function bye() {\n    return 'good bye'\n}\n\n\nexport default function hello() {\n    return 'hello~~~'\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "// main.js\n\nimport hello, {hi, bye} from './say.js'\n\nconsole.log(hello())\nconsole.log(hi())\nconsole.log(bye())"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.error",
+                            "value": {
+                                "name": "Error",
+                                "message": "Cannot find module 'say.js'\nRequire stack:\n- <repl>",
+                                "stack": "node:internal/modules/cjs/loader:998\n  throw err;\n  ^\n\n    at Function.Module._resolveFilename (node:internal/modules/cjs/loader:995:15)\n    at Function.Module._resolveFilename.sharedData.moduleResolveFilenameHook.installedValue [as _resolveFilename] (/Users/hyoungdonju/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/resources/scripts/node_modules/@cspotcode/source-map-support/source-map-support.js:679:30)\n    at Function.Module._load (node:internal/modules/cjs/loader:841:27)\n    at Function._._load (/Users/hyoungdonju/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:115372)\n    at Module.require (node:internal/modules/cjs/loader:1061:19)\n    at require (node:internal/modules/cjs/helpers:103:18)\n    at <Cell 3> [1, 56]\n    at Script.runInContext (node:vm:141:12)\n    at Script.runInNewContext (node:vm:146:17)\n    at Object.runInNewContext (node:vm:306:38)"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 동적 import\n\n- import() 메서드를 사용한다. return은 promise이므로 then을 쓰거나 await를 사용하면 된다. \n- export default 가 있는 경우 {default: }를 사용해서 받으면 된다. 아래 코드 참조\n- 페이지를 처음 로딩시 필요없는 모듈에 대해서 import()로 가져오면 lazy loading이 된다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "// main.js\n\nconst {default: hello, hi, bye} = await import('./say-ko.js')\n\nconsole.log(hello())\nconsole.log(hi())\nconsole.log(bye())"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.error",
+                            "value": {
+                                "name": "Error",
+                                "message": "Cannot find module './say-ko.js'\nRequire stack:\n- <repl>",
+                                "stack": "    at Function.Module._resolveFilename (node:internal/modules/cjs/loader:995:15)\n    at Function.Module._resolveFilename.sharedData.moduleResolveFilenameHook.installedValue [as _resolveFilename] (/Users/hyoungdonju/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/resources/scripts/node_modules/@cspotcode/source-map-support/source-map-support.js:679:30)\n    at Function.Module._load (node:internal/modules/cjs/loader:841:27)\n    at Function._._load (/Users/hyoungdonju/.vscode/extensions/donjayamanne.typescript-notebook-2.0.6/out/extension/server/index.js:2:115372)\n    at Module.require (node:internal/modules/cjs/loader:1061:19)\n    at require (node:internal/modules/cjs/helpers:103:18)\n    at <Cell 6> [3, 0]\n    at processTicksAndRejections (node:internal/process/task_queues:95:5)"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
