@@ -3,7 +3,14 @@
         {
             "language": "markdown",
             "source": [
-                "## Dynamic import\n\n소스코드는 'dynamic-moudule' 폴더 참조. "
+                "# Dynamic import\n\n## import()\n\n일반적으로 dynamic import로 불리는 import() 구문은 함수와 유사한 표현식이다. 비모듈 환경에서 비동기 및 동적으로 ECMAScript 모듈을 로딩 할 수 있다.\n선언적 형식의 정적 import 와는 달리 import()는 사용할 때만 모듈을 로딩하므로 코딩상의 유연성을 확보할 수 있다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "> https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import"
             ],
             "outputs": []
         },
@@ -44,7 +51,14 @@
         {
             "language": "markdown",
             "source": [
-                "## 동적 import\n\n- import() 메서드를 사용한다. return은 promise이므로 then을 쓰거나 await를 사용하면 된다. \n- export default 가 있는 경우 {default: }를 사용해서 받으면 된다. 아래 코드 참조\n- 페이지를 처음 로딩시 필요없는 모듈에 대해서 import()로 가져오면 lazy loading이 된다. "
+                "## 문법\n\n```js\nimport(moduleName)\n```\n\nimport() 는 함수처럼 보이지만 함수가 아니다. const myImport = import 와 같이 별칭을 사용할 수 없다. \n\n### 파라미터\n\n- moduleName : 경로를 포함한 파일명. 정적 import시와 동일한 방식\n\n### 반환값\n\n- module namespace object : 로드한 모듈에서 export한 모든 것을 담고있는 object이다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 동적 import 사용\n\n- import() 메서드를 사용한다. return은 promise이므로 then을 쓰거나 await를 사용하면 된다. \n- export default 가 있는 경우 {default: }를 사용해서 받으면 된다. 아래 코드 참조\n- 페이지를 처음 로딩시 필요없는 모듈에 대해서 import()로 가져오면 lazy loading이 된다. "
             ],
             "outputs": []
         },
@@ -67,6 +81,41 @@
                     ]
                 }
             ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Module namespace object\n\nmodule namespace object는 정적 또는 동적 import를 통해 가져올 수 있는 object 이다. 모듈에서 export하고 있는 모든 정보를 담고 있는 object이며, prototype이 null 이므로 어떠한 추가적인 키를 가지고 있지 않다. 다만 export default 인 경우 'default' 키를 갖는다. \n\nmodule namespace object는 몇번을 import 해도 동일하므로 아래와 같은 상황에서 일반적으로 true 이다. \n\n```js\nimport * as mod from \"/my-module.js\";\n\nimport(\"/my-module.js\").then((mod2) => {\n  console.log(mod === mod2); // true\n});\n```\n\n예외적으로 모듈에서 Thenable 인터페이스를 구현한 then() 메서드를 구현하고 있다면 false이다. \n\n> https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#thenables"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 예제 \n\n### 예제 1: 특정 상황에서만 모듈을 가져오기 \n\n```js\n(async () => {\n  if (somethingIsTrue) {\n    // import module for side effects\n    await import(\"/modules/my-module.js\");\n  }\n})();\n```"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### 예제 2: 클릭했을 때에만 모듈 import\n\n```js\nconst main = document.querySelector(\"main\");\nfor (const link of document.querySelectorAll(\"nav > a\")) {\n  link.addEventListener(\"click\", (e) => {\n    e.preventDefault();\n\n    import(\"/modules/my-module.js\")\n      .then((module) => {\n        module.loadPageInto(main);\n      })\n      .catch((err) => {\n        main.textContent = err.message;\n      });\n  });\n}\n```"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### 예제 3: 환경에 따라 다르게 모듈 사용\n\n```js\nlet myModule;\n\nif (typeof window === \"undefined\") {\n  myModule = await import(\"module-used-on-server\");\n} else {\n  myModule = await import(\"module-used-in-browser\");\n}\n```"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### 예제 4: 모듈명을 동적으로 정해서 가져오기기\n\n```js\nPromise.all(\n  Array.from({ length: 10 }).map((_, index) =>\n    import(`/modules/module-${index}.js`),\n  ),\n).then((modules) => modules.forEach((module) => module.load()));\n```"
+            ],
+            "outputs": []
         }
     ]
 }
