@@ -1,0 +1,46 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# 어휘 문법 Lexical Grammar\n\njavascript에서 주석, 키워드, 자동 세미콜론 삽입 등과 같은 언어적으로 제공하는 문법에 대해 알아봅니다. \n\n> https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Lexical_grammar"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 공백과 개행 문자 \n\n- U+0009 탭 \\t\n- U+000A 줄바꿈 (unix에서 에서 사용됨) \\n\n- U+000D 줄바꿈 (옛날 mac등에서 사용)  \\r"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 주석\n\n```javascript\n/*\n이것은 여러줄 주석입니다. \n*/\nfunction commantary () {\n    // 이것은 한줄 주석입니다. \n    console.log('Hello' + /* 코드 중간에도 사용 가능합니다.  */ + ' Echo!!')\n}\n\n```"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 키워드\n\n아래 나열된 단어는 자바스크립트에서 예약된 단어들이므로 변수명 등에 사용하지 마세요\n\n| ecmascript 2015기준 예약 키워드 | 확장 예약 키워드           | 구형 표준의 확장 예약 키워드 |\n| ------------------------------- | -------------------------- | ---------------------------- |\n| break                           | enum                       | abstract                     |\n| case                            | (아래는 strict 모드에서만) | boolean                      |\n| catch                           | implements                 | byte                         |\n| class                           | interface                  | char                         |\n| const                           | let                        | double                       |\n| continue                        | package                    | final                        |\n| debugger                        | private                    | float                        |\n| default (en-US)                 | protected                  | goto                         |\n| delete                          | public                     | int                          |\n| do                              | static                     | long                         |\n| else                            | (아래는 module에서)        | native                       |\n| export                          | await                      | short                        |\n| extends                         |                            | synchronized                 |\n| finally                         |                            | throws                       |\n| for                             |                            | transient                    |\n| function                        |                            | volatile                     |\n| if                              |                            |                              |\n| import                          |                            | null                         |\n| in                              |                            | true                         |\n| instanceof                      |                            | false                        |\n| new                             |                            |                              |\n| return                          |                            |                              |\n| super                           |                            |                              |\n| switch                          |                            |                              |\n| this                            |                            |                              |\n| throw                           |                            |                              |\n| try                             |                            |                              |\n| typeof                          |                            |                              |\n| var                             |                            |                              |\n| void                            |                            |                              |\n| while                           |                            |                              |\n| with                            |                            |                              |\n| yield                           |                            |                              |\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 리터럴\n\n프로그래밍에서 리터럴이란 소스코드에서 특정한 자료형의 값을 직접 표현하는 방식을 말한다. \n\n### Null\n\n```js\nnull\n```\n\n### Boolean\n\n```js\ntrue\nfalse\n```\n\n### 숫자 10진법\n\n```js\n1232135234\n```\n\n\n### 숫자 2진법\n\n```js\nvar FLT_SIGNBIT  = 0b10000000000000000000000000000000; // 2147483648\nvar FLT_EXPONENT = 0b01111111100000000000000000000000; // 2139095040\nvar FLT_MANTISSA = 0B00000000011111111111111111111111; // 8388607\n```\n\n### 숫자 8진법\n\n```js\nvar n = 0O755; // 493\nvar m = 0o644; // 420\n```\n\n### 숫자 16진법\n\n```js\n0xFFFFFFFFFFFFFFFFF // 295147905179352830000\n0x123456789ABCDEF   // 81985529216486900\n0XA                 // 10\n```\n\n## 숫자 구분자 \n```js\n// separators in decimal numbers\n1_000_000_000_000\n1_050.95\n\n// separators in binary numbers\n0b1010_0001_1000_0101\n\n// separators in octal numbers\n0o2_2_5_6\n\n// separators in hex numbers\n0xA0_B0_C0\n\n// separators in BigInts\n1_000_000_000_000_000_000_000n\n```\n\n### 객체 리터럴\n\n```js\nvar o = { a: 'foo', b: 'bar', c: 42 };\n\n// shorthand notation. New in ES2015\nvar a = 'foo', b = 'bar', c = 42;\nvar o = {a, b, c};\n\n// instead of\nvar o = { a: a, b: b, c: c };\n```\n\n### 배열 리터럴\n\n```js\n[1954, 1974, 1990, 2014]\n```\n### 문자열 리터럴\n\n```js\n'foo'\n\"bar\"\n```\n\n### 정규표현식 리터럴\n\n```js\n/ab+c/g\n```\n\n### 템플릿 리터럴\n\nbacktick(`) 를 사용한다.\n\n```js\n`string text`\n\n`string text line 1\n string text line 2`\n\n`string text ${expression} string text`\n\ntag `string text ${expression} string text`\n```\n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 자동 세미콜론 삽입\n\n### 예시 1)\n```js\n{ 1 2 } 3\n\n// is transformed by ASI into\n\n{ 1 2 ;} 3;\n```\n\n\n### 예시 2)\n\n```js\na = b\n++c\n\n// is transformend by ASI into\n\na = b;\n++c;\n```\n\n### 예시 3) \n\n```js\nreturn\na + b\n\n// is transformed by ASI into\n\nreturn;\na + b;\n```"
+            ],
+            "outputs": []
+        }
+    ]
+}
