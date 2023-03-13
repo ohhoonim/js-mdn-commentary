@@ -1,0 +1,104 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# Private class features\n\n자바스크립트에서 클래스의 멤버(필드, 메서드)는 default가 public이다. OOP(객체지향프로그래밍)에서 캡슐화라는 것이 자바스크립트에서는 언어적으로 지원하지 않았었기 때문에 캡슐화가 필요한 경우 클로저를 이용한 방식으로 많이 구현해왔다.(참고로 OOP에서 캡슐화와 다형성은 필수다)\n\nprivate 은 최근(ECMA2019)에 지원되기 시작 (개인적으로 타입스크립트를 사용하는 이유이기도 하다)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 문법\n\nclass 멤버에 '#' 을 붙여준다. 약간의 제약사항이 있다.\n\n- private으로 선언된 변수명은 클래스내에서 유일해야한다. \n- constructor는 private이 될 수 없다. (#constructor 와 같이 쓸수 없음)\n\n```js\nclass ClassWithPrivate {\n  #privateField;\n  #privateFieldWithInitializer = 42;\n\n  #privateMethod() {\n    // …\n  }\n\n  static #privateStaticField;\n  static #privateStaticFieldWithInitializer = 42;\n\n  static #privateStaticMethod() {\n    // …\n  }\n}\n```"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 예제"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### private 필드 상속"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "class ClassWithPrivateField {\n    #privateField;\n  \n    constructor() {\n      this.#privateField = 42;\n    }\n  }\n  \n  class SubClass extends ClassWithPrivateField {\n    #subPrivateField;\n  \n    constructor() {\n      super();\n      this.#subPrivateField = 23;\n    //   this.#privateField = 44;  // private은 상속이 안된다. \n    }\n  }\n  \n  new SubClass();\n  // SubClass {#subPrivateField: 23}"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "text/plain",
+                            "value": [
+                                "SubClass {}"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### static private 필드"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "class House {\n    static #ROOM;\n  \n    static publicStaticMethod() {\n      House.#ROOM = 42;\n      return House.#ROOM;\n    }\n  \n    publicInstanceMethod() {\n      House.#ROOM = 42;\n      return House.#ROOM;\n    }\n  }\n  \n  console.log(House.publicStaticMethod()); // 42\n//   console.log(House.#ROOM); // private은 static이 되어도 절대 밖에서는 접근이 안된다. \n  console.log(new House().publicInstanceMethod()); // 42"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "42",
+                                "42",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### private 메서드"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "class MessageDecorator {\n  #message;\n\n  get decoratedMessage() {\n    return `🎬${this.#message}🛑`;\n  }\n  set #decoratedMessage(msg) {\n    this.#message = msg;\n  }\n\n  set newMessage(msg) {\n    this.#message = msg;\n  }\n\n  constructor() {\n    this.#message = \"hello world\";\n  }\n}\n\nlet obj = new MessageDecorator();\n// console.log(obj.#decoratedMessage('annyeonghaseyo')); // 이렇게 쓸수 없다.\nconsole.log(obj.decoratedMessage); // 🎬hello world🛑\n\nobj.newMessage = \"annyeonghaseyo\";\nconsole.log(obj.decoratedMessage);\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "🎬hello world🛑",
+                                "🎬annyeonghaseyo🛑",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
