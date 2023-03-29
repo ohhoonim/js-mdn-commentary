@@ -10,6 +10,33 @@
         {
             "language": "markdown",
             "source": [
+                "### javascript 는 기본적으로 public이다. \n"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "class Car {\n    #tire;\n    #handle;\n\n    constructor(tireCount) {\n        this.#tire = tireCount;\n    }\n\n    #start() {\n        return 'starting...';\n    }\n    stop() {\n        return 'stopping..';\n    }\n}\n\nconst car = new Car(4);\nconsole.log(car.#tire); // 4\ncar.#tire = 16;\nconsole.log(car.#tire);  //16\n\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "4",
+                                "16",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
                 "## 문법\n\nclass 멤버에 '#' 을 붙여준다. 약간의 제약사항이 있다.\n\n- private으로 선언된 변수명은 클래스내에서 유일해야한다. \n- constructor는 private이 될 수 없다. (#constructor 와 같이 쓸수 없음)\n\n```js\nclass ClassWithPrivate {\n  #privateField;\n  #privateFieldWithInitializer = 42;\n\n  #privateMethod() {\n    // …\n  }\n\n  static #privateStaticField;\n  static #privateStaticFieldWithInitializer = 42;\n\n  static #privateStaticMethod() {\n    // …\n  }\n}\n```"
             ],
             "outputs": []
@@ -31,7 +58,7 @@
         {
             "language": "typescript",
             "source": [
-                "class ClassWithPrivateField {\n    #privateField;\n  \n    constructor() {\n      this.#privateField = 42;\n    }\n  }\n  \n  class SubClass extends ClassWithPrivateField {\n    #subPrivateField;\n  \n    constructor() {\n      super();\n      this.#subPrivateField = 23;\n    //   this.#privateField = 44;  // private은 상속이 안된다. \n    }\n  }\n  \n  new SubClass();\n  // SubClass {#subPrivateField: 23}"
+                "class ClassWithPrivateField {\n    #privateField;\n  \n    constructor() {\n      this.#privateField = 42;\n    }\n  }\n  \n  class SubClass extends ClassWithPrivateField {\n    #subPrivateField;\n  \n    constructor() {\n      super();\n      this.#subPrivateField = 23;\n       this.privateField = 44;  // private은 상속이 안된다. \n    }\n  }\n  \n  new SubClass();\n  // SubClass {#subPrivateField: 23}"
             ],
             "outputs": [
                 {

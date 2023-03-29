@@ -1,0 +1,98 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# String.prototype.replaceAll()\n\nreplaceAll() 메서드는 패턴이 일치하는 모든 항목을 대체하여 새로은 문자열로 반환해준다. 기존 문자열은 변경되지 않는다. \n\n🔗 [MDN: String.prototype.replaceAll()](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const p = 'The quick brown fox jumps over the lazy dog. If the dog reacted, was it really lazy?';\n\nconsole.log(p.replaceAll('dog', 'monkey'));\n\nconst regex = /Dog/ig;  // 대소문자 구분 없이(i), 전역(g)으로 \nconsole.log(p.replaceAll(regex, 'ferret'));"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "The quick brown fox jumps over the lazy monkey. If the monkey reacted, was it really lazy?",
+                                "The quick brown fox jumps over the lazy ferret. If the ferret reacted, was it really lazy?",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 매개변수\n\n```javascript\nreplaceAll(pattern, replacement)\n```\n\n- pattern: 문자열 또는 Symbol.replace 메서드가 있는 객체 -> 정규식. 정규식인 경우 전역플래그(g)가 있어야 한다. 그렇지 않을 경우 TypeError\n- replacement: 문자열 또는 함수  "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 사용법"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "### 기존 문자열은 변경되지 않는다."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let para = 'The quick brown fox jumps over the lazy dog. If the dog reacted, was it really lazy?'\nlet newPara = para.replaceAll('dog', 'bibibi')\nconsole.log(para)\nconsole.log(newPara)"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "The quick brown fox jumps over the lazy dog. If the dog reacted, was it really lazy?",
+                                "The quick brown fox jumps over the lazy bibibi. If the bibibi reacted, was it really lazy?",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 비전역 정규식은 오류가 난다."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let p3 = 'The quick brown fox jumps over the lazy dog. If the dog reacted, was it really lazy?'\ntry{\n    console.log(p3.replaceAll(/dog/, 'bibibibbbbb'))  // <- g가 없다 \n} catch(e) {\n    console.log(e)\n}"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "The quick brown fox jumps over the lazy bibibibbbbb. If the bibibibbbbb reacted, was it really lazy?",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

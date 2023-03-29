@@ -1,0 +1,50 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# String.prototype.matchAll()"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "const regexp = /t(e)(st(\\d?))/g;\nconst str = 'test1test2';\nconst array = [...str.matchAll(regexp)];\nconsole.log(array)\nconsole.log(array[0]);\n// Expected output: Array [\"test1\", \"e\", \"st1\", \"1\"]\n\nconsole.log(array[1]);\n// Expected output: Array [\"test2\", \"e\", \"st2\", \"2\"]"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "typescript",
+            "source": [
+                "const str2 = 'table football, foosball'\nconsole.log([...str2.matchAll(/foo[a-z]*ll/g)])"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "[",
+                                "  [",
+                                "    'football',",
+                                "    index: 6,",
+                                "    input: 'table football, foosball',",
+                                "    groups: undefined",
+                                "  ],",
+                                "  [",
+                                "    'foosball',",
+                                "    index: 16,",
+                                "    input: 'table football, foosball',",
+                                "    groups: undefined",
+                                "  ]",
+                                "]",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
