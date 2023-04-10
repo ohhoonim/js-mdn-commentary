@@ -1,0 +1,62 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# Logical AND assignment (&&=)\n\n> https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND_assignment\n\n## Truthy와 Falsy\n\njavascript에서는 특별히 false로 취급되는 것들이 있다.  \n\n> false, 0, -0, 0n, \"\", null, undefined, NaN\n\n나머지는 전부 true로 취급된다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let a = false;\nif (a) { console.log(a + '는 true 입니다.')} else { console.log(a + '는 false입니다.')}\n\na = 0;\nif (a) { console.log(a + '는 true 입니다.')} else { console.log(a + '는 false입니다.')}\n\na = \"\"; \nif (a) { console.log(a + '는 true 입니다.')} else { console.log(a + '는 false입니다.')}\n\na = null; \nif (a) { console.log(a + '는 true 입니다.')} else { console.log(a + '는 false입니다.')}\n\na = undefined;\nif (a) { console.log(a + '는 true 입니다.')} else { console.log(a + '는 false입니다.')}\n\na = NaN ;\nif (a) { console.log(a + '는 true 입니다.')} else { console.log(a + '는 false입니다.')}\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "false는 false입니다.",
+                                "0는 false입니다.",
+                                "는 false입니다.",
+                                "null는 false입니다.",
+                                "undefined는 false입니다.",
+                                "NaN는 false입니다.",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "\"&&=\" 연산자는 좌측 변수가 truthy일 경우 우측의 값을 할당하는 연산자이다."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let a = 1;\nlet b = 0;\n\na &&= 2;\nconsole.log(a);\n// Expected output: 2\n\nb &&= 2;\n// b는 0이므로 falsy이다. 2가 b에 들어가지 않는다.\nconsole.log(b);\n// Expected output: 0"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "2",
+                                "0",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
