@@ -75,7 +75,7 @@
         {
             "language": "typescript",
             "source": [
-                "const msgText1 = 'Your phone number is 010-1233-4567 and 011-890-1234'\nconst resultArray1 = msgText1.matchAll(/\\d{3}-\\d{3,4}-\\d{4}/g)\nconsole.log([...resultArray1])"
+                "const msgText1 = 'Your phone number is 010-1233-4567 and 011-890-1234'\nconst resultArray1 = msgText1.matchAll(/(\\d{3}-\\d{3,4})-\\d{4}/g)\nconsole.log([...resultArray1])"
             ],
             "outputs": [
                 {
@@ -86,12 +86,14 @@
                                 "[",
                                 "  [",
                                 "    '010-1233-4567',",
+                                "    '010-1233',",
                                 "    index: 21,",
                                 "    input: 'Your phone number is 010-1233-4567 and 011-890-1234',",
                                 "    groups: undefined",
                                 "  ],",
                                 "  [",
                                 "    '011-890-1234',",
+                                "    '011-890',",
                                 "    index: 39,",
                                 "    input: 'Your phone number is 010-1233-4567 and 011-890-1234',",
                                 "    groups: undefined",
