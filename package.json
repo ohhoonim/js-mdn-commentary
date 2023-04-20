@@ -1,0 +1,22 @@
+{
+  "name": "js-mdn-commentary",
+  "version": "1.0.0",
+  "description": "javascript의 주요 문법을 정리합니다. 모든 내용은 MDN을 참조합니다.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ohhoonim/js-mdn-commentary.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ohhoonim/js-mdn-commentary/issues"
+  },
+  "homepage": "https://github.com/ohhoonim/js-mdn-commentary#readme",
+  "dependencies": {
+    "node-fetch": "^2.6.9"
+  }
+}

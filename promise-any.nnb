@@ -45,6 +45,8 @@
                             "mime": "application/vnd.code.notebook.stdout",
                             "value": [
                                 "true",
+                                "All promises were rejected",
+                                "AggregateError",
                                 "[ 'always fail', 'always fail2' ]",
                                 ""
                             ]

@@ -1,0 +1,44 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# Top level await\n\n기존의 await는 항상 async 키워드를 붙이 함수 내부에서만 사용해야만 했다. 하지만 이제는 async 단독으로 사용가능하다\n\n[Top level await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "// npm install node-fetch@2\nimport fetch from \"node-fetch\"\n// async가 붙은 함수 내부에서만 사용가능 했다. \n\nasync function getColors(colorName) {\n    const colors = await fetch(\"http://127.0.0.1:5501/datas/colors.json\")\n        .then((response) => response.json())\n        .then(json => json[colorName]);\n    return colors;\n}\n\ngetColors('blue').then(val => console.log(val));"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "\"10 0 0\"",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "// 모듈에서 이렇게 export도 가능하다. \n\nfunction getColors(r, g, b) {\n    const colors = fetch(\"../data/colors.json\").then((response) => response.json());\n    return colors;\n}\n\nexport default await colors;"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "// 외부 모듈을 로드하거나 dbconnection과 같이 시간이 오래걸리는 경우 활용할 수 있다. \n\nconst commonComponent = await import(\"./components/commonComponent.js\");\n\nconst connection = await dbConnector();"
+            ],
+            "outputs": []
+        }
+    ]
+}
