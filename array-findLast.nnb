@@ -1,0 +1,117 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# Array.prototype.findLast()\n\nfindLast() 메서드는 배열 끝에서부터 찾고자하는 요소를 리턴한다. 처음부터 찾으려면 find() 메서드를 사용하면 됨\n\n[Array.prototype.findLast()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLast)"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## find()"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "// find()\nconst names = [\"matthew\", \"alison\", \"sam\", \"dean\"]\n\nlet findedName = names.find(name => name === \"matthew\")\nconsole.log(findedName)\n\nlet findedName2 = names.find(name => name.includes(\"m\"))\nconsole.log(findedName2)"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "matthew",
+                                "matthew",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## findLast()\n\n```js\nfindLast(callbackFn)\nfindLast(callbackFn, thisArg)\n```\n\n- callbackFn(element, index, array)\n  - element: 배열값\n  - index: 배열인덱스\n  - array: findLast() 메서드를 호출한 배열 \n- thisArg: callbackFn 내부에서 this로 사용할 값 "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "// findLast()\nconst names = [\"matthew\", \"alison\", \"sam\", \"dean\"]\n\nlet findLastName = names.findLast(name => name === \"matthew\")\nconsole.log(findLastName)\n\nlet findLastName2 = names.findLast(name => name.includes(\"m\"))\nconsole.log(findLastName2)"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "matthew",
+                                "sam",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 예제1: 배열에서 사용하기 "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const inventory = [\n    { name: \"apples\", quantity: 2 },\n    { name: \"bananas\", quantity: 0 },\n    { name: \"fish\", quantity: 1 },\n    { name: \"cherries\", quantity: 5 },\n  ];\n  \n  // return true inventory stock is low\n  function isNotEnough(item) {\n    return item.quantity < 2;\n  }\n  \n  console.log(inventory.findLast(isNotEnough));\n  // { name: \"fish\", quantity: 1 }"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "{ name: 'fish', quantity: 1 }",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 예제2: object에서 사용하기 \n\nfindLast() 메서드는 이것의 길이 속성을 읽은 다음 각 정수 인덱스에 액세스합니다."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const arrayLike = {\n    length: 5,   // length가 없으면 동작하지 않는다. 값이 잘못되면 오동작한다. \n    0: 2,\n    1: 7.3,\n    2: 4.2,\n    3: 6,\n    4: 9.8,\n  };\n\nconsole.log(\n    Array.prototype.findLast.call(arrayLike, x =>  Number.isInteger(x))\n)"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "6",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
