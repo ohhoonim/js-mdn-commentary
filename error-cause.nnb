@@ -1,0 +1,46 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# Error.prototype.cause\n\n[Error.prototype.cause MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/cause)\n\n오류 인스턴스의 cause 데이터 속성은 오류의 특정 원래 원인을 나타냅니다.\n\n원래 오류에 여전히 접근하기 위해 더 구체적이거나 유용한 오류 메시지로 오류를 포착하고 다시 던질 때 사용됩니다.\n\ncause 값은 어떤 타입이든 가능하며, cause가 반드시 Error 객체일 것이라고 생각하면 안된다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## Error 생성자\n\n```js\nnew Error()\nnew Error(message)\nnew Error(message, options)\n```\n\n- message: 에러 메세지 (그냥 문자열)\n- options.cause: 에러의 원인을 설명하는 값 \n\n```js\nthrow new Error(\"new error\", { cause: err})\n```"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 예제1 : cause로 Error 다시 발생시키기"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "try {\n    connectToDatabase();\n} catch (err) {\n    throw new Error(\"Connecting to database failed.\", { cause: err });\n}"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 예제2: 구조화된 데이터형태로 에러 원인을 제공하기"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "function makeRSA(p, q) {\n    if (!Number.isInteger(p) || !Number.isInteger(q)) {\n      throw new Error(\"RSA key generation requires integer inputs.\", {\n        cause: { code: \"NonInteger\", values: [p, q] },\n      });\n    }\n    if (!areCoprime(p, q)) {\n      throw new Error(\"RSA key generation requires two co-prime integers.\", {\n        cause: { code: \"NonCoprime\", values: [p, q] },\n      });\n    }\n    // rsa algorithm…\n  }"
+            ],
+            "outputs": []
+        }
+    ]
+}
