@@ -1,0 +1,120 @@
+{
+    "cells": [
+        {
+            "language": "markdown",
+            "source": [
+                "# Object.hasOwn()\n\n[Object.hasOwn() MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn)\n\n지정된 객체에 표시된 속성이 자체 속성인 경우 Object.hasOwn() 정적 메서드는 true를 반환한다. 속성이 상속되거나 존재하지 않는 경우, 메서드는 false를 반환한다.\n\n참고: Object.hasOwn()을 쓸수있다면 Object.prototype.hasOwnProperty() 대신 사용하는 것을 추천한다. "
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const person = {\n  name: 'matthew',\n  age: 34,\n  phone: null\n};\n\nconsole.log(Object.hasOwn(person, 'name')); // true\nconsole.log(Object.hasOwn(person, 'age')); // true\nconsole.log(Object.hasOwn(person, 'phone')); // true\n"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "true",
+                                "true",
+                                "true",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "속성 값이 null이거나 정의되지 않은 경우에도 지정된 속성이 객체의 직접 속성인 경우 Object.hasOwn() 메서드는 true를 반환합니다. \n\n속성이 상속되었거나 전혀 선언되지 않은 경우 이 메서드는 false를 반환합니다. 인 연산자와 달리, 이 방법은 객체의 프로토타입 체인에서 지정된 속성을 확인하지 않습니다."
+            ],
+            "outputs": []
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 상속된 property"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const myCar = {\n    carType: 'auto',\n    handle: 'power',\n    tireCount: 6\n}\n\nconsole.log(Object.hasOwn(example, \"carType\")); // true\nconsole.log(Object.hasOwn(example, \"toString\")); // false\n\n// in 연산자로 검사해보면 \n// console.log(\"carType\" in myCar) // true\n// console.log(\"toString\" in myCar) // true"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "text/plain",
+                            "value": [
+                                "\u001b[33mfalse\u001b[39m"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 상속된 property를 건너뛰려면"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "let employee = {\n  type: '정규직'\n}\nlet matthew = {\n  name: 'matthew',\n  age: 23\n}\nmatthew.__proto__ = employee\n\nfor (const name in matthew) {\n  console.log(name)\n}\nconsole.log('---------------------')\nfor (const name in matthew) {\n  if (Object.hasOwn(matthew, name)) {\n    console.log(name)\n  }\n}"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "name",
+                                "age",
+                                "type",
+                                "---------------------",
+                                "name",
+                                "age",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "language": "markdown",
+            "source": [
+                "## 배열의 index가 존재하는지 체크하기"
+            ],
+            "outputs": []
+        },
+        {
+            "language": "javascript",
+            "source": [
+                "const fruits = [\"Apple\", \"Banana\", \"Watermelon\", \"Orange\"];\nObject.hasOwn(fruits, 3); // true ('Orange')\nObject.hasOwn(fruits, 4); // false - not defined"
+            ],
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "text/plain",
+                            "value": [
+                                "\u001b[33mfalse\u001b[39m"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
