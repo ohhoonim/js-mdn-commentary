@@ -45,15 +45,17 @@
         {
             "language": "javascript",
             "source": [
-                "const myCar = {\n    carType: 'auto',\n    handle: 'power',\n    tireCount: 6\n}\n\nconsole.log(Object.hasOwn(example, \"carType\")); // true\nconsole.log(Object.hasOwn(example, \"toString\")); // false\n\n// in 연산자로 검사해보면 \n// console.log(\"carType\" in myCar) // true\n// console.log(\"toString\" in myCar) // true"
+                "const myCar = {\n    carType: 'auto',\n    handle: 'power',\n    tireCount: 6\n}\n\n// console.log(Object.hasOwn(myCar, \"carType\")); // true\n// console.log(Object.hasOwn(myCar, \"toString\")); // false\n\n// in 연산자로 검사해보면 \nconsole.log(\"carType\" in myCar) // true\nconsole.log(\"toString\" in myCar) // true"
             ],
             "outputs": [
                 {
                     "items": [
                         {
-                            "mime": "text/plain",
+                            "mime": "application/vnd.code.notebook.stdout",
                             "value": [
-                                "\u001b[33mfalse\u001b[39m"
+                                "true",
+                                "true",
+                                ""
                             ]
                         }
                     ]
