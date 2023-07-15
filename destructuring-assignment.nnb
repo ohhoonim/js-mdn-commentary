@@ -78,7 +78,7 @@
         {
             "language": "typescript",
             "source": [
-                "// 기본 사용법 \nconst foo = ['one', \"two\", \"three\", \"four\",null]\n\nconst [red, yello, green, white, black] = foo\nconsole.log(red)\nconsole.log(yello)\nconsole.log(green)\nconsole.log(white)\nconsole.log(black)  // black은 배열에 없으므로 undefined"
+                "// 기본 사용법 \nconst foo = ['one', \"two\", \"three\", \"four\",]\n\nconst [red, yello, green, white, black] = foo\nconsole.log(red)\nconsole.log(yello)\nconsole.log(green)\nconsole.log(white)\nconsole.log(black)  // black은 배열에 없으므로 undefined"
             ],
             "outputs": [
                 {
@@ -90,7 +90,7 @@
                                 "two",
                                 "three",
                                 "four",
-                                "undefined",
+                                "null",
                                 ""
                             ]
                         }
@@ -103,7 +103,20 @@
             "source": [
                 "// 변수값 교환하기 \nfunction switchVariable() {\n    let a = 1;  // 세미콜론 없으면 안됩니다. \n    let b = 3;\n\n    [a, b] = [b, a];\n\n    console.log(a);\n    console.log(b);\n}\n\nswitchVariable()  "
             ],
-            "outputs": []
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "3",
+                                "1",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
             "language": "typescript",
@@ -115,9 +128,22 @@
         {
             "language": "javascript",
             "source": [
-                "// 정규식 활용\nconst url = \"https://developer.mozilla.org/en-US/docs/Web/JavaScript\";\nconst parsedURL = /^(\\w+):\\/\\/([^/]+)\\/(.*)$/.exec(url);\nconsole.log(parsedURL);\n\nconst [ , protocol, fullhost, fullpath] = parsedURL;\nconsole.log(protocol)\n// 브라우저에서는 실행됩니다. "
+                "// 정규식 활용\nconst url = \"https://developer.mozilla.org/en-US/docs/Web/JavaScript\";\nconst parsedURL = /^(\\w+):\\/\\/([^/]+)\\/(.*)$/.exec(url);\nconsole.log(parsedURL);\n\nconst [ , protocol, fullhost, fullpath] = parsedURL;\n\nconsole.log(protocol)\n// 브라우저에서는 실행됩니다. "
             ],
-            "outputs": []
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.error",
+                            "value": {
+                                "name": "Error",
+                                "message": "Failed to generate code object, Cannot read properties of null (reading 'type')",
+                                "stack": ""
+                            }
+                        }
+                    ]
+                }
+            ]
         },
         {
             "language": "markdown",
@@ -138,19 +164,46 @@
             "source": [
                 "// 가져오고 변수명도 바꾸기 \nconst user = { id: 42, isVerified: true};\nconst {id: seq, isVerified: auth, name : nick = 'foo'} = user\n\nconsole.log(seq)\nconsole.log(auth)\nconsole.log(nick)"
             ],
-            "outputs": []
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "42",
+                                "true",
+                                "foo",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
             "language": "javascript",
             "source": [
                 "// 파라미터로 분해해서 받기\nconst user = {\n    id: 42,\n    displayName: \"jdoe\",\n    fullName: {\n        firstName: \"Jane\",\n        lastName: \"Doe\",\n    },\n};\n\nfunction userFullName({ fullName: nick = {firstName:'foo', lastName:'bar'} }) {\n    return nick.firstName + ' ' + nick.lastName;\n}\n\nconsole.log(userFullName(user))\n\nconst user2 = {\n    id: 42,\n    displayName: \"jdoe\"\n}\n\nconsole.log(userFullName(user2))"
             ],
-            "outputs": []
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "Jane Doe",
+                                "foo bar",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
             "language": "javascript",
             "source": [
-                "// primitive 값을 구조분해 할당해보면\nconst { a, toFixed } = 1\nconsole.log(a, toFixed)  // 안된다. \n\nconst {} = null // 이런것도 안된다. "
+                "// primitive 값을 구조분해 할당해보면\nconst { a, toFixed } = 1\nconsole.log(a, toFixed)  // 안된다. \n\nconst {} = null // 이런것도 안된다. \n"
             ],
             "outputs": []
         },
@@ -159,7 +212,20 @@
             "source": [
                 "// prototype\n\nconst obj = {\n    self: \"123\",\n    __proto__: {\n      prot: \"456\",\n    },\n  };\n  const { self, prot } = obj;\n  \n  console.log(self); // \"123\"\n  console.log(prot); // \"456\"\n\n  // 참고로 Object.prototype.__proto__ 의 직접적인 사용은 권장되지 않는다.\n  // Object.getPrototyeOf() Object.setPrototypeOf() 등을 사용하라. \n  // https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/proto"
             ],
-            "outputs": []
+            "outputs": [
+                {
+                    "items": [
+                        {
+                            "mime": "application/vnd.code.notebook.stdout",
+                            "value": [
+                                "123",
+                                "456",
+                                ""
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
             "language": "markdown",
